@@ -5,35 +5,26 @@ def get_crypto_data(filter_name=None, filter_price=None):
     try:
         url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=15&page=1&sparkline=false"
         response = requests.get(url)
-        
-        # Проверка статуса ответа от API
         if response.status_code != 200:
             print("Ошибка при запросе данных.")
             return []
 
-        data = response.json()  # Получаем данные в формате JSON
-        filtered_data = []  # Список для отфильтрованных данных
-
-        # Фильтрация по имени
+        data = response.json()  
+        filtered_data = [] 
         if filter_name:
-            filter_name_lower = filter_name.lower()  # Преобразуем фильтр в нижний регистр для нечувствительности к регистру
+            filter_name_lower = filter_name.lower()  
             for coin in data:
-                coin_name = coin["name"].lower()  # Имя криптовалюты в нижнем регистре
-                if filter_name_lower in coin_name:  # Если имя криптовалюты содержит фильтр
-                    filtered_data.append(coin)  # Добавляем в результат
-            data = filtered_data  # Обновляем данные с учетом фильтра по имени
-
-        # Фильтрация по цене
+                coin_name = coin["name"].lower()  
+                if filter_name_lower in coin_name:  
+                    filtered_data.append(coin)  
+            data = filtered_data  
         if filter_price:
-            filtered_data = []  # Новый список для отфильтрованных данных
+            filtered_data = []  
             for coin in data:
-                # Если текущая цена криптовалюты больше, чем заданный фильтр, добавляем её в новый список
                 if coin["current_price"] > filter_price:
-                    filtered_data.append(coin)  # Добавляем криптовалюту в список
-            data = filtered_data  # Обновляем данные с учетом фильтра по цене
-
-        return data  # Возвращаем отфильтрованные данные
-
+                    filtered_data.append(coin)  
+            data = filtered_data 
+        return data  
     except Exception as e:
         print(f"Ошибка: {e}")
         return []
@@ -52,8 +43,6 @@ def display_data(data):
 def main():
     name_filter = input("Фильтр по имени (оставьте пустым для пропуска): ")
     price_filter_input = input("Фильтр по минимальной цене (оставьте пустым для пропуска): ")
-    
-    # Преобразуем введенную цену в число (если введена)
     if price_filter_input:
         try:
             price_filter = float(price_filter_input)
@@ -62,13 +51,12 @@ def main():
             print("Ошибка: введено некорректное значение для фильтра по цене.")
             price_filter = None
     else:
-        price_filter = None  # Если фильтр не задан, устанавливаем его как None
-
+        price_filter = None  
     while True:
-        data = get_crypto_data(name_filter, price_filter)  # Получаем данные с учетом фильтров
-        display_data(data)  # Отображаем отфильтрованные данные
+        data = get_crypto_data(name_filter, price_filter)  
+        display_data(data) 
         print("Обновление через 30 секунд...")
-        time.sleep(30)  # Ждем 30 секунд перед следующим запросом
+        time.sleep(30)  
 
 if __name__ == "__main__":
     main()
