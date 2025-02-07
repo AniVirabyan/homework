@@ -1,0 +1,8 @@
+Harvard University,1636,31000
+University of Oxford,1096,26000
+University of Cambridge,1209,24000
+Stanford University,1885,17000  
+Massachusetts Institute of Technology,1861,11400  
+California Institute of Technology,1891,2300  
+Yale University,1701,14000  
+Princeton University,1746,8500 
